@@ -1,0 +1,41 @@
+﻿@model BOOK_LEND_RECORD
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    var editMemberList = ViewBag.EditMemberList;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form asp-action="EditLendRecord" method="post">
+        
+        <div class="mb-3">
+            <input asp-for="BOOK_ID" style="display:none" type="text" class="form-control">
+            <label for="exampleInputPassword1" class="form-label">借閱日期</label>
+            <input asp-for="LEND_DATE " type="date" class="form-control" id="exampleInputPassword1" required>
+        </div>
+
+
+        <div class="mb-3">
+            <label for="disabledSelect" class="form-label">借閱人</label>
+            <select asp-for="KEEPER_ID" id="disabledSelect" class="form-select">
+                <option value="">請選擇</option>
+                @foreach (var member in editMemberList)
+                {
+                    <option value="@member.USER_ID">@member.USER_CNAME</option>
+                }
+            </select>
+        </div>
+     
+
+      
+        <button type="submit" class="btn btn-primary">存檔</button>
+    </form>
+</body>
+</html>

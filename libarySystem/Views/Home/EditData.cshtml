@@ -1,0 +1,76 @@
+﻿@model BOOK_DATA
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    var editBookClassList = ViewBag.EditBookClassList;
+    var editMemberList = ViewBag.EditMemberList;
+    var bookCodeList = ViewBag.BookCodeList;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form asp-action="EditData" method="post">
+        <div class="mb-3">
+            <input asp-for="BOOK_ID" style="display:none" type="text" class="form-control">
+            <label for="exampleInputEmail1" class="form-label">書名</label>
+            <input asp-for="BOOK_NAME" type="text" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">作者</label>
+            <input asp-for="BOOK_AUTHOR" type="text" class="form-control" id="exampleInputPassword1" required>
+        </div>
+        <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">出版商</label>
+            <input asp-for="BOOK_PUBLISHER" type="text" class="form-control" id="exampleInputPassword1"  required>
+        </div>
+        <div class="form-floating">
+            <textarea asp-for="BOOK_NOTE" class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px" required></textarea>
+            <label for="floatingTextarea2">內容簡介</label>
+        </div>
+        <div class="mb-3">
+            <label  for="exampleInputPassword1" class="form-label">購書日期</label>
+            <input asp-for="BOOK_BOUGHT_DATE" type="date" class="form-control" id="exampleInputPassword1" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="disabledSelect" class="form-label">圖書類別</label>
+            <select asp-for="BOOK_CLASS_ID" id="disabledSelect" class="form-select" required>
+                <option value="">請選擇</option>
+                @foreach (var className in editBookClassList)
+                {
+                    <option value="@className.BOOK_CLASS_ID">@className.BOOK_CLASS_NAME</option>
+                }
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="disabledSelect" class="form-label">借閱狀態</label>
+            <select asp-for="BOOK_STATUS" id="disabledSelect" class="form-select">
+                <option value="">請選擇</option>
+                @foreach (var status in bookCodeList)
+                {
+                    <option value="@status.CODE_ID">@status.CODE_ID:@status.CODE_NAME</option>
+                }
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="disabledSelect" class="form-label">借閱人</label>
+            <select asp-for="BOOK_KEEPER" id="disabledSelect"  class="form-select">
+                <option value="">請選擇</option>
+                @foreach (var member in editMemberList)
+                {
+                    <option value="@member.USER_ID">@member.USER_CNAME</option>
+                }
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">存檔</button>
+    </form>
+</body>
+</html>

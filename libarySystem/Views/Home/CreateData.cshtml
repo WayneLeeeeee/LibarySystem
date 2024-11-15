@@ -1,0 +1,41 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    var bookClassList = ViewBag.BookClassList;
+}
+
+
+<form asp-action="CreateData" method="post">
+    <div class="mb-3">
+        <label for="exampleInputEmail1" class="form-label">書名</label>
+        <input type="text" class="form-control" id="exampleInputEmail1" name="createName" aria-describedby="emailHelp" required>
+    </div>
+    <div class="mb-3">
+        <label for="exampleInputPassword1" class="form-label">作者</label>
+        <input type="text" class="form-control" id="exampleInputPassword1" name="createAuthor" required>
+    </div>
+    <div class="mb-3">
+        <label for="exampleInputPassword1" class="form-label">出版商</label>
+        <input type="text" class="form-control" id="exampleInputPassword1" name="createPublisher" required>
+    </div>
+    <div class="form-floating">
+        <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px" name="content" required></textarea>
+        <label for="floatingTextarea2">內容簡介</label>
+    </div>
+    <div class="mb-3">
+        <label for="exampleInputPassword1" class="form-label">購書日期</label>
+        <input type="date" class="form-control" id="exampleInputPassword1" name="createDate" required>
+    </div>
+    <div class="mb-3">
+        <label for="disabledSelect" class="form-label">圖書類別</label>
+        <select id="disabledSelect" name="classID" class="form-select" required>
+            <option value="">請選擇</option>
+            @foreach (var className in bookClassList)
+            {
+                <option value="@className.BOOK_CLASS_ID">@className.BOOK_CLASS_NAME</option>
+            }
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">存檔</button>
+</form>

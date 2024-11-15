@@ -1,0 +1,134 @@
+﻿@model List<libarySystem.ViewModels.LibaryQuerryData>
+
+@{
+    ViewData["Title"] = "Home Page";
+    var memberList = ViewBag.memberList; //(List<MEMBER_M>)
+    var bookCodeList = ViewBag.BookCodeList;
+    var bookNameList = ViewBag.BookNameList;
+     var bookClassList = ViewBag.BookClassList;
+    var message = TempData["Message"] as string;
+}
+
+
+@*     <ul>
+        @foreach (var item in MemberList)
+    {   
+            <li>@item.USER_CNAME</li>
+    }
+    </ul> *@
+
+    @if (!string.IsNullOrEmpty(message))
+    {
+    <div class="alert alert-warning" role="alert" id="tempMessage">
+            @message
+        </div>
+    }
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+<div class="text-center">
+
+        <form asp-action="Index" method="get" id="searchForm">
+            <legend>圖書維護</legend>
+            <div class="mb-3">
+                <label for="book" class="form-label">書名</label>
+                <input type="text" id="book" name="bookName" class="form-control" placeholder="輸入書名">
+            </div>
+            <div class="mb-3">
+                <label for="class" class="form-label">圖書類別</label>
+                <select id="class" name="classID" class="form-select">
+                <option value="">請選擇</option>
+                @foreach (var className in bookClassList)
+                {
+                    <option value="@className.BOOK_CLASS_ID">@className.BOOK_CLASS_NAME</option>
+                }
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="borrowingStatus" class="form-label">借閱人</label>
+                <select id="borrowingStatus" name="borrowerID" class="form-select">
+                <option value="">請選擇</option>
+                @foreach (var member in memberList)
+                {
+                    <option value="@member.USER_ID">@member.USER_CNAME</option>
+                }
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="borrowingStatus" class="form-label">借閱狀態</label>
+                <select id="borrowingStatus" name="borrowingStatusID" class="form-select">
+                <option value="">請選擇</option>
+                @foreach (var status in bookCodeList)
+                {
+                    <option value="@status.CODE_ID">@status.CODE_ID:@status.CODE_NAME</option>
+                }
+            </select>
+            </div>
+            <button type="submit" class="btn btn-outline-primary" id="searchBtn">查詢</button>
+            <button type="reset" class="btn btn-outline-secondary" id="resetBtn">清除</button>
+        <a href="/Home/CreateData" class="btn btn-outline-info">新增</a>
+    </form>
+</div>
+
+
+
+
+    <table class="table table-striped table-hover" id="tableContainer" @* style="display: none; margin-top: 20px;" *@>
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">圖書類別</th>
+            <th scope="col">書名</th>
+            <th scope="col">購書日期</th>
+            <th scope="col">借閱狀態</th>
+            <th scope="col">借閱人</th>
+            <th scope="col">編輯</th>
+            <th scope="col">刪除</th>
+            <th scope="col">借閱紀錄</th>
+           
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.BOOK_ID</td>
+                <td>@item.BOOK_CLASS_NAME</td>
+                <td>@item.BOOK_NAME</td>
+                <td>@item.BOOK_BOUGHT_DATE?.ToString("yyyy-MM-dd")</td>
+                <td>@item.BOOK_STATUS_NAME</td>
+                <td>@item.USER_CNAME</td>
+                    <td><a href="@Url.Action("EditData", "Home", new { id =@item.BOOK_ID })" class="btn btn-outline-success">編輯</a></td>
+                    <td>
+                        <a href="@Url.Action("DeleteData", "Home", new { id =@item.BOOK_ID })" class="btn btn-outline-danger" onclick="return confirm('確定要刪除嗎？');">
+                删除</a>
+                </td>
+                    <td><a href="@Url.Action("QuerryLendRecord", "Home", new { id =@item.BOOK_ID })" class="btn btn btn-outline-dark">借閱紀錄</a></td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+    <script>
+
+        // 設定計時器，30秒後隱藏訊息並重新刷新頁面
+        setTimeout(function () {
+            var messageDiv = document.getElementById("tempMessage");
+            if (messageDiv) {
+                messageDiv.style.display = "none"; // 隱藏訊息
+            }
+            location.reload(); // 刷新頁面
+        }, 10000); // 10000 毫秒 = 10 秒
+    </script>
+</body>
+</html>
